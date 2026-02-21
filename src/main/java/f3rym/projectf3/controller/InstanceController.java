@@ -1,7 +1,6 @@
 package f3rym.projectf3.controller;
 
 import f3rym.projectf3.dto.InstanceDto;
-import f3rym.projectf3.mapper.InstanceMapper;
 import f3rym.projectf3.service.InstanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/instances")
+@RequestMapping("/api/v1/instances")
 @RequiredArgsConstructor
 public class InstanceController {
     private final InstanceService service;

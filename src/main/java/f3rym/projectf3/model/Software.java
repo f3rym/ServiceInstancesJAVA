@@ -7,14 +7,10 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CloudInstance {
-
+@AllArgsConstructor
+public class Software {
     private Long id;
     private String name;
-    private String instanceType;
-    private String os;
-    private String status;
-
+    private String version;
 }

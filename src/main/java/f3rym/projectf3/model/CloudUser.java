@@ -1,6 +1,5 @@
 package f3rym.projectf3.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,12 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CloudInstance {
+public class CloudUser {
 
     private Long id;
-    private String name;
-    private String instanceType;
-    private String os;
-    private String status;
+    private String username;
 
 }

@@ -15,5 +15,4 @@ public class InstanceMapper {
         return dto;
     }
 }
-// map struct
 

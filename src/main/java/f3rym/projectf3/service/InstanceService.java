@@ -14,6 +14,8 @@ import java.util.List;
 public class InstanceService {
     private final InstanceRepository repository;
     private final InstanceMapper mapper;
+
+
     public InstanceDto getById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)

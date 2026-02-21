@@ -1,7 +1,7 @@
-package f3rym.projectf3.mapper;
+package ferym.project.mapper;
 
-import f3rym.projectf3.dto.InstanceDto;
-import f3rym.projectf3.model.CloudInstance;
+import ferym.project.dto.InstanceDto;
+import ferym.project.model.CloudInstance;
 import org.springframework.stereotype.Component;
 
 @Component

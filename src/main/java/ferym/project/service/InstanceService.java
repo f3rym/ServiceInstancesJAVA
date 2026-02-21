@@ -1,9 +1,8 @@
-package f3rym.projectf3.service;
+package ferym.project.service;
 
-import f3rym.projectf3.dto.InstanceDto;
-import f3rym.projectf3.mapper.InstanceMapper;
-import f3rym.projectf3.model.CloudInstance;
-import f3rym.projectf3.repository.InstanceRepository;
+import ferym.project.dto.InstanceDto;
+import ferym.project.mapper.InstanceMapper;
+import ferym.project.repository.InstanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

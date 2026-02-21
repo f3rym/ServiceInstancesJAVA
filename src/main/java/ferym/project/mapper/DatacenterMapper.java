@@ -1,8 +1,8 @@
-package f3rym.projectf3.mapper;
+package ferym.project.mapper;
 
 
-import f3rym.projectf3.dto.DatacenterDto;
-import f3rym.projectf3.model.Datacenter;
+import ferym.project.dto.DatacenterDto;
+import ferym.project.model.Datacenter;
 import org.springframework.stereotype.Component;
 
 @Component

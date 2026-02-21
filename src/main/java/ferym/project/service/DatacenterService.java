@@ -1,9 +1,9 @@
-package f3rym.projectf3.service;
+package ferym.project.service;
 
 
-import f3rym.projectf3.dto.DatacenterDto;
-import f3rym.projectf3.mapper.DatacenterMapper;
-import f3rym.projectf3.repository.DatacenterRepository;
+import ferym.project.dto.DatacenterDto;
+import ferym.project.mapper.DatacenterMapper;
+import ferym.project.repository.DatacenterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

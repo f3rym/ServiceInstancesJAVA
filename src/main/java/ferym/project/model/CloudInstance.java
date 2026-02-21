@@ -1,15 +1,20 @@
-package f3rym.projectf3.model;
+package ferym.project.model;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Datacenter {
+public class CloudInstance {
+
     private Long id;
     private String name;
-    private String location;
+    private String instanceType;
+    private String os;
+    private String status;
+
 }

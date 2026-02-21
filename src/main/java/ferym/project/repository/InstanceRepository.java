@@ -1,6 +1,7 @@
-package f3rym.projectf3.repository;
+package ferym.project.repository;
 
-import f3rym.projectf3.model.*;
+import f3rym.project.model.*;
+import ferym.project.model.CloudInstance;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

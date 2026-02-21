@@ -1,6 +1,6 @@
-package f3rym.projectf3.repository;
+package ferym.project.repository;
 
-import f3rym.projectf3.model.Datacenter;
+import ferym.project.model.Datacenter;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

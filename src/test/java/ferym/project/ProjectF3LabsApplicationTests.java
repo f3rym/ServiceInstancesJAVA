@@ -1,4 +1,4 @@
-package f3rym.projectf3;
+package ferym.project;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +8,7 @@ class ProjectF3LabsApplicationTests {
 
     @Test
     void contextLoads() {
+        // No test for my program
     }
 
 }

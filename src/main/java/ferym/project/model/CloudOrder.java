@@ -1,4 +1,4 @@
-package f3rym.projectf3.model;
+package ferym.project.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

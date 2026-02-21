@@ -1,4 +1,4 @@
-package f3rym.projectf3.dto;
+package ferym.project.dto;
 
 import lombok.Data;
 

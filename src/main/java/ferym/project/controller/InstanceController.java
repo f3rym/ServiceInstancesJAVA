@@ -1,7 +1,7 @@
-package f3rym.projectf3.controller;
+package ferym.project.controller;
 
-import f3rym.projectf3.dto.InstanceDto;
-import f3rym.projectf3.service.InstanceService;
+import ferym.project.dto.InstanceDto;
+import ferym.project.service.InstanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,8 @@
 package ferym.project.service;
 
 import ferym.project.dto.InstanceDto;
+import ferym.project.dto.InstanceFilterDto;
+import ferym.project.exception.InstanceNotFoundException;
 import ferym.project.mapper.InstanceMapper;
 import ferym.project.repository.InstanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +20,21 @@ public class InstanceService {
     public InstanceDto getById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Инстанс не найден"));
+                .orElseThrow(() -> new InstanceNotFoundException("Инстанс не найден с id: " + id));
     }
 
-    public List<InstanceDto> getFiltered(String type) {
-        if (type == null) return repository.findAll()
-                .stream()
-                .map(mapper::toDto)
-                .toList();
-
+    public List<InstanceDto> getFiltered(InstanceFilterDto filter) {
         return repository.findAll().stream()
-                .filter(i -> i.getInstanceType().equalsIgnoreCase(type))
+                .filter(i -> {
+                    if (filter == null) {
+                        return true;
+                    }
+                    boolean matchType = filter.type() == null
+                            || i.getInstanceType().equalsIgnoreCase(filter.type());
+                    boolean matchStatus = filter.status() == null
+                            || i.getStatus().equalsIgnoreCase(filter.status());
+                    return matchType && matchStatus;
+                })
                 .map(mapper::toDto)
                 .toList();
     }

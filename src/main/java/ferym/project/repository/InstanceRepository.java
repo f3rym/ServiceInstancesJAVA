@@ -1,6 +1,5 @@
 package ferym.project.repository;
 
-import f3rym.project.model.*;
 import ferym.project.model.CloudInstance;
 import org.springframework.stereotype.Repository;
 

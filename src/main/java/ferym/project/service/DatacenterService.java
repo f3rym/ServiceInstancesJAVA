@@ -22,15 +22,16 @@ public class DatacenterService {
                 .orElseThrow(() -> new RuntimeException("! Unknown datacenter"));
     }
     public List<DatacenterDto> getFiltered(String location) {
-        if (location == null)
+        if (location == null) {
             return repository.findAll()
                     .stream()
                     .map(mapper::toDto)
                     .toList();
-        return repository.findAll().stream()
-                .filter(i -> i.getLocation().equalsIgnoreCase(location))
-                .map(mapper::toDto)
-                .toList();
+        }
+            return repository.findAll().stream()
+                    .filter(i -> i.getLocation().equalsIgnoreCase(location))
+                    .map(mapper::toDto)
+                    .toList();
     }
 }
 

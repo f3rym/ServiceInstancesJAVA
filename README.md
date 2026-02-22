@@ -5,4 +5,4 @@
 # 🧪 Лабораторная работа №1
 
 ## 🌐 Ссылка на Sonar:
-https://sonarcloud.io/project/issues?impactSeverities=HIGH&issueStatuses=OPEN%2CCONFIRMED&id=iamFOOSA_PNAY&open=AZlejTQlS2hnDgcu4_37
+https://sonarcloud.io/project/issues?issueStatuses=OPEN%2CCONFIRMED&id=f3rym_ServiceInstancesJAVA

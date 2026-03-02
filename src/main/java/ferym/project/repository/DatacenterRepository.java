@@ -1,31 +1,10 @@
 package ferym.project.repository;
 
 import ferym.project.model.Datacenter;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class DatacenterRepository {
-    private final List<Datacenter> datacenters = new ArrayList<>();
-
-
-    public DatacenterRepository() {
-        datacenters.add(new Datacenter(1L, "Minsk", "EU"));
-        datacenters.add(new Datacenter(2L, "Moscow", "EU"));
-        datacenters.add(new Datacenter(3L, "Warsaw", "EU"));
-        datacenters.add(new Datacenter(4L, "California", "US"));
-
-    }
-    public List<Datacenter> findAll() {
-
-        return datacenters;
-    }
-    public Optional<Datacenter> findById(Long id) {
-        return datacenters.stream()
-                .filter(i -> i.getId().equals(id))
-                .findFirst();
-    }
+public interface DatacenterRepository extends JpaRepository<Datacenter, Long> {
+    Optional<Datacenter> findByName(String name);
 }

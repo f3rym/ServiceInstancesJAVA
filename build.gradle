@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.2'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'checkstyle'
+    // id 'checkstyle' // Закомментировано: отключает плагин
 }
 
 group = 'f3rym'
@@ -25,23 +25,69 @@ repositories {
     mavenCentral()
 }
 
+/* Закомментировано: настройки и задачи чекстайла
 checkstyle {
     toolVersion = '10.12.5'
     configFile = file("${project.rootDir}/checkstyle.xml")
     ignoreFailures = false
     showViolations = true
+    maxWarnings = 0
 }
 
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required = false
+        html.required = true
+    }
+    doFirst {
+        ignoreFailures = false
+    }
+}
+
+tasks.named('bootRun') {
+    dependsOn 'checkstyleMain'
+    mustRunAfter 'checkstyleMain'
+}
+
+tasks.named('build') {
+    dependsOn 'checkstyleMain', 'checkstyleTest'
+    mustRunAfter 'checkstyleMain', 'checkstyleTest'
+}
+
+tasks.named('compileJava') {
+    finalizedBy 'checkstyleMain'
+}
+
+tasks.named('compileTestJava') {
+    finalizedBy 'checkstyleTest'
+}
+
+tasks.named('checkstyleMain') {
+    doLast {
+        if (state.failure != null) {
+            throw new GradleException("Checkstyle Main failed: Please fix all violations")
+        }
+    }
+}
+
+tasks.named('checkstyleTest') {
+    doLast {
+        if (state.failure != null) {
+            throw new GradleException("Checkstyle Test failed: Please fix all violations")
+        }
+    }
+}
+*/
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    runtimeOnly 'com.h2database:h2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

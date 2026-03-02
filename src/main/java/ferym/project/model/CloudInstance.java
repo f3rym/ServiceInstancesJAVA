@@ -1,18 +1,36 @@
 package ferym.project.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Id;
 
+import java.util.Set;
+
+@Entity
+@Table(name = "instances")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class CloudInstance {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String instanceType;
     private String os;
+    private Double price;
+
     private String status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "datacenter_id")
+    private Datacenter datacenter;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "instance_software",
+            joinColumns = @JoinColumn(name = "instance_id"),
+            inverseJoinColumns = @JoinColumn(name = "software_id")
+    )
+    private Set<Software> installedSoftware;
 }
+

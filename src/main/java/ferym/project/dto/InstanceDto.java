@@ -2,6 +2,8 @@ package ferym.project.dto;
 
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 public class InstanceDto {
 
@@ -9,4 +11,11 @@ public class InstanceDto {
     private String name;
     private String instanceType;
     private String status;
+    private String os;
+    private Double price;
+    private String datacenter;
+    private Set<String> software;
 }
+
+
+

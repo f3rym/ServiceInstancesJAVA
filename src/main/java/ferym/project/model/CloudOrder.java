@@ -1,17 +1,28 @@
 package ferym.project.model;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "orders")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class CloudOrder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userId;
-    private Long instanceId;
-    private Double price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private CloudUser user;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "instance_id")
+    private CloudInstance instance;
+
     private LocalDateTime createdAt;
 }

@@ -1,7 +1,6 @@
 package ferym.project.controller;
 
 import ferym.project.dto.InstanceDto;
-import ferym.project.dto.InstanceFilterDto;
 import ferym.project.service.InstanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,41 +13,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InstanceController {
 
-    private final InstanceService service;
+    private final InstanceService instanceService;
 
     @GetMapping
-    public List<InstanceDto> getInstances(
-            @RequestParam(required = false) String type,
-            @RequestParam(required = false) String status
-    ) {
-        InstanceFilterDto filter = new InstanceFilterDto(type, status);
-        return service.getFiltered(filter);
+    public List<InstanceDto> getAll() {
+        return instanceService.getAll();
     }
 
     @GetMapping("/{id}")
-    public InstanceDto getInstanceById(@PathVariable Long id) {
-        return service.getById(id);
+    public InstanceDto getById(@PathVariable Long id) {
+        return instanceService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public InstanceDto createInstance(@RequestBody InstanceDto dto) {
-        return service.create(dto);
+    public InstanceDto create(@RequestBody InstanceDto dto) {
+        return instanceService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public InstanceDto updateInstance(@PathVariable Long id, @RequestBody InstanceDto dto) {
-        return service.update(id, dto);
-    }
-
-    @PatchMapping("/{id}/status")
-    public InstanceDto updateStatus(@PathVariable Long id, @RequestParam String status) {
-        return service.updateStatus(id, status);
+    public InstanceDto update(@PathVariable Long id, @RequestBody InstanceDto dto) {
+        return instanceService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteInstance(@PathVariable Long id) {
-        service.delete(id);
+    public void delete(@PathVariable Long id) {
+        instanceService.delete(id);
     }
 }

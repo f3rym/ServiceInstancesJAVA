@@ -1,14 +1,14 @@
 package ferym.project.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.*;
 import java.util.List;
 
 @Entity
 @Table(name = "datacenters")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Datacenter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +18,5 @@ public class Datacenter {
     private String location;
 
     @OneToMany(mappedBy = "datacenter")
-    @JsonIgnore
     private List<CloudInstance> instances;
 }

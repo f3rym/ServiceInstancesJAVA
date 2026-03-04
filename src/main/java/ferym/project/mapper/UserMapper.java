@@ -1,8 +1,10 @@
 package ferym.project.mapper;
 
 import ferym.project.dto.UserDto;
+import ferym.project.model.CloudOrder;
 import ferym.project.model.CloudUser;
 import org.springframework.stereotype.Component;
+import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
@@ -13,16 +15,21 @@ public class UserMapper {
         UserDto dto = new UserDto();
         dto.setId(entity.getId());
         dto.setUsername(entity.getUsername());
-        dto.setOrders(entity.getOrders());
+        if (entity.getOrders() != null) {
+            dto.setOrderIds(entity.getOrders().stream()
+                    .map(CloudOrder::getId)
+                    .collect(Collectors.toList()));
+        }
         return dto;
     }
+
     public CloudUser toEntity(UserDto dto) {
         if (dto == null) {
             return null;
         }
         CloudUser entity = new CloudUser();
+        entity.setId(dto.getId());
         entity.setUsername(dto.getUsername());
-        entity.setOrders(dto.getOrders());
         return entity;
     }
 }

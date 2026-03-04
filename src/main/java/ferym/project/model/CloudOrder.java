@@ -1,14 +1,14 @@
 package ferym.project.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class CloudOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +16,7 @@ public class CloudOrder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
     private CloudUser user;
-
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "instance_id")

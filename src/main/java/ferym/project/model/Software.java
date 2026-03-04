@@ -1,13 +1,14 @@
 package ferym.project.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "software")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Software {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

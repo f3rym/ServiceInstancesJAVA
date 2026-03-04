@@ -10,21 +10,17 @@ public class OrderMapper {
         if (entity == null) {
             return null;
         }
+
         OrderDto dto = new OrderDto();
         dto.setId(entity.getId());
-        dto.setUser(entity.getUser());
-        dto.setCreatedAt(entity.getCreatedAt());
-        dto.setInstance(entity.getInstance());
+
+        if (entity.getUser() != null) {
+            dto.setUserId(entity.getUser().getId());
+        }
+        if (entity.getInstance() != null) {
+            dto.setInstanceId(entity.getInstance().getId());
+        }
         return dto;
     }
-    public CloudOrder toEntity(OrderDto dto) {
-        if (dto == null) {
-            return null;
-        }
-        CloudOrder entity = new CloudOrder();
-        entity.setUser(dto.getUser());
-        entity.setInstance(dto.getInstance());
-        entity.setCreatedAt(dto.getCreatedAt());
-        return entity;
-    }
+
 }

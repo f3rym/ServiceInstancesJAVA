@@ -16,29 +16,29 @@ public class DatacenterController {
     private final DatacenterService datacenterService;
 
     @GetMapping
-    public List<DatacenterDto> getDatacenters(@RequestParam(required = false) String location) {
-        return datacenterService.getFiltered(location);
+    public List<DatacenterDto> getAll() {
+        return datacenterService.getAll();
     }
 
     @GetMapping("/{id}")
-    public DatacenterDto getDatacenterById(@PathVariable Long id) {
+    public DatacenterDto getById(@PathVariable Long id) {
         return datacenterService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DatacenterDto createDatacenter(@RequestBody DatacenterDto dto) {
+    public DatacenterDto create(@RequestBody DatacenterDto dto) {
         return datacenterService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public DatacenterDto updateDatacenter(@PathVariable Long id, @RequestBody DatacenterDto dto) {
+    public DatacenterDto update(@PathVariable Long id, @RequestBody DatacenterDto dto) {
         return datacenterService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDatacenter(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         datacenterService.delete(id);
     }
 }

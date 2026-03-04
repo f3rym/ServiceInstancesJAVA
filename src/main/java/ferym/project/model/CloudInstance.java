@@ -1,14 +1,14 @@
 package ferym.project.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import jakarta.persistence.Id;
-
+import lombok.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "instances")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class CloudInstance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,12 +18,12 @@ public class CloudInstance {
     private String instanceType;
     private String os;
     private Double price;
-
     private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "datacenter_id")
     private Datacenter datacenter;
+
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -33,4 +33,3 @@ public class CloudInstance {
     )
     private Set<Software> installedSoftware;
 }
-

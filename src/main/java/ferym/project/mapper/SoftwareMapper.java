@@ -10,21 +10,23 @@ public class SoftwareMapper {
         if (entity == null) {
             return null;
         }
+
         SoftwareDto dto = new SoftwareDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setVersion(entity.getVersion());
-        dto.setInstances(entity.getInstances());
         return dto;
     }
+
     public Software toEntity(SoftwareDto dto) {
         if (dto == null) {
             return null;
         }
+
         Software entity = new Software();
+        entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setVersion(dto.getVersion());
-        entity.setInstances(dto.getInstances());
         return entity;
     }
 }

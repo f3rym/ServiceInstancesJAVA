@@ -1,14 +1,14 @@
 package ferym.project.mapper;
 
 import ferym.project.dto.InstanceDto;
-import ferym.project.model.CloudInstance;
+import ferym.project.model.Instance;
 import ferym.project.model.Software;
 import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 
 @Component
 public class InstanceMapper {
-    public InstanceDto toDto(CloudInstance entity) {
+    public InstanceDto toDto(Instance entity) {
         if (entity == null) {
             return null;
         }
@@ -30,11 +30,11 @@ public class InstanceMapper {
         return dto;
     }
 
-    public CloudInstance toEntity(InstanceDto dto) {
+    public Instance toEntity(InstanceDto dto) {
         if (dto == null) {
             return null;
         }
-        CloudInstance entity = new CloudInstance();
+        Instance entity = new Instance();
         entity.setName(dto.getName());
         entity.setInstanceType(dto.getInstanceType());
         entity.setOs(dto.getOs());

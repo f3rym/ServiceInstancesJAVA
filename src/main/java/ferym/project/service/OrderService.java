@@ -3,12 +3,13 @@ package ferym.project.service;
 import ferym.project.dto.OrderDto;
 import ferym.project.exception.SystemFailureException;
 import ferym.project.mapper.OrderMapper;
-import ferym.project.model.CloudInstance;
-import ferym.project.model.CloudOrder;
-import ferym.project.model.CloudUser;
+import ferym.project.model.Instance;
+import ferym.project.model.Order;
+import ferym.project.model.User;
 import ferym.project.repository.InstanceRepository;
 import ferym.project.repository.OrderRepository;
 import ferym.project.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,11 +35,11 @@ public class OrderService {
 
     @Transactional
     public OrderDto create(OrderDto dto) {
-        CloudOrder order = new CloudOrder();
+        Order order = new Order();
 
-        CloudUser user = userRepository.findById(dto.getUserId())
+        User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
-        CloudInstance instance = instanceRepository.findById(dto.getInstanceId())
+        Instance instance = instanceRepository.findById(dto.getInstanceId())
                 .orElseThrow(() -> new RuntimeException("Инстанс не найден"));
 
         order.setUser(user);
@@ -56,18 +57,39 @@ public class OrderService {
     @Transactional
     public void createOrderWithNewUser(String username, Long instanceId) {
         // 1. Создаем пользователя
-        CloudUser user = new CloudUser();
+        User user = new User();
         user.setUsername(username);
         userRepository.save(user);
 
-        CloudInstance instance = instanceRepository.findById(instanceId)
-                .orElseThrow(() -> new RuntimeException("Инстанс не найден"));
+        Instance instance = instanceRepository.findById(instanceId)
+                .orElseThrow(() -> new EntityNotFoundException("Инстанс не найден"));
 
         if ("fail".equalsIgnoreCase(username)) {
             throw new SystemFailureException("Имитация сбоя.");
         }
 
-        CloudOrder order = new CloudOrder();
+        Order order = new Order();
+        order.setUser(user);
+        order.setInstance(instance);
+        order.setCreatedAt(LocalDateTime.now());
+
+        orderRepository.save(order);
+    }
+
+    public void createOrderWithoutTransaction(String username, Long instanceId) {
+        User user = new User();
+        user.setUsername(username);
+        userRepository.save(user);
+
+        Instance instance = instanceRepository.findById(instanceId)
+                .orElseThrow(() -> new EntityNotFoundException("Инстанс не найден"));
+
+        // Имитация сбоя
+        if ("fail".equalsIgnoreCase(username)) {
+            throw new SystemFailureException("Имитация сбоя системы! ТРАНЗАКЦИИ НЕТ, отката не будет.");
+        }
+
+        Order order = new Order();
         order.setUser(user);
         order.setInstance(instance);
         order.setCreatedAt(LocalDateTime.now());

@@ -1,12 +1,12 @@
 package ferym.project.mapper;
 
 import ferym.project.dto.OrderDto;
-import ferym.project.model.CloudOrder;
+import ferym.project.model.Order;
 import org.springframework.stereotype.Component;
 
 @Component
 public class OrderMapper {
-    public OrderDto toDto(CloudOrder entity) {
+    public OrderDto toDto(Order entity) {
         if (entity == null) {
             return null;
         }

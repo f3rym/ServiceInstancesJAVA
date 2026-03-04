@@ -18,5 +18,5 @@ public class Datacenter {
     private String location;
 
     @OneToMany(mappedBy = "datacenter")
-    private List<CloudInstance> instances;
+    private List<Instance> instances;
 }

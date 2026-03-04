@@ -9,7 +9,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CloudInstance {
+public class Instance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

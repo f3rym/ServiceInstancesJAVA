@@ -2,7 +2,7 @@ package ferym.project.service;
 
 import ferym.project.dto.InstanceDto;
 import ferym.project.mapper.InstanceMapper;
-import ferym.project.model.CloudInstance;
+import ferym.project.model.Instance;
 import ferym.project.model.Datacenter;
 import ferym.project.model.Software;
 import ferym.project.repository.DatacenterRepository;
@@ -38,7 +38,7 @@ public class InstanceService {
 
     @Transactional
     public InstanceDto create(InstanceDto dto) {
-        CloudInstance entity = mapper.toEntity(dto);
+        Instance entity = mapper.toEntity(dto);
 
         if (dto.getDatacenterName() != null) {
             Datacenter dc = datacenterRepository.findByName(dto.getDatacenterName())
@@ -56,7 +56,7 @@ public class InstanceService {
 
     @Transactional
     public InstanceDto update(Long id, InstanceDto dto) {
-        CloudInstance entity = instanceRepository.findById(id)
+        Instance entity = instanceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Инстанс не найден"));
 
         entity.setName(dto.getName());

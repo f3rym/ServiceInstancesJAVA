@@ -1,7 +1,7 @@
 package ferym.project.repository;
 
-import ferym.project.model.CloudOrder;
+import ferym.project.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<CloudOrder, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 }

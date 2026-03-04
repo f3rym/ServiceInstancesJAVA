@@ -34,8 +34,14 @@ public class OrderController {
 
     @PostMapping("/transaction")
     @ResponseStatus(HttpStatus.CREATED)
-    public String demoTransaction(@RequestParam String username, @RequestParam Long instanceId) {
+    public String transaction(@RequestParam String username, @RequestParam Long instanceId) {
         orderService.createOrderWithNewUser(username, instanceId);
+        return "Успех! Пользователь и заказ созданы: " + username;
+    }
+    @PostMapping("/transaction-with-error")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String transactionWithError(@RequestParam String username, @RequestParam Long instanceId) {
+        orderService.createOrderWithoutTransaction(username, instanceId);
         return "Успех! Пользователь и заказ созданы: " + username;
     }
 }

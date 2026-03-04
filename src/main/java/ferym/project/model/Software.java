@@ -18,5 +18,5 @@ public class Software {
     private String version;
 
     @ManyToMany(mappedBy = "installedSoftware")
-    private Set<CloudInstance> instances;
+    private Set<Instance> instances;
 }

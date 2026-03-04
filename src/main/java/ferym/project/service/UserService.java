@@ -2,7 +2,7 @@ package ferym.project.service;
 
 import ferym.project.dto.UserDto;
 import ferym.project.mapper.UserMapper;
-import ferym.project.model.CloudUser;
+import ferym.project.model.User;
 import ferym.project.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -36,14 +36,14 @@ public class UserService {
     // Создание пользователя
     @Transactional
     public UserDto create(UserDto dto) {
-        CloudUser entity = userMapper.toEntity(dto);
-        CloudUser savedEntity = userRepository.save(entity);
+        User entity = userMapper.toEntity(dto);
+        User savedEntity = userRepository.save(entity);
         return userMapper.toDto(savedEntity);
     }
 
     @Transactional
     public UserDto update(Long id, UserDto dto) {
-        CloudUser entity = userRepository.findById(id)
+        User entity = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
 
         entity.setUsername(dto.getUsername());

@@ -1,12 +1,12 @@
 package ferym.project.repository;
 
-import ferym.project.model.CloudInstance;
+import ferym.project.model.Instance;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface InstanceRepository extends JpaRepository<CloudInstance, Long> {
+public interface InstanceRepository extends JpaRepository<Instance, Long> {
     @Override
     @EntityGraph(attributePaths = {"datacenter", "installedSoftware"})
-    List<CloudInstance> findAll();
+    List<Instance> findAll();
 }

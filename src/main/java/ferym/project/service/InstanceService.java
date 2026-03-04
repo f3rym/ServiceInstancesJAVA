@@ -26,7 +26,9 @@ public class InstanceService {
 
     @Transactional(readOnly = true)
     public List<InstanceDto> getAll() {
-        return instanceRepository.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
+        return instanceRepository.findAll().stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

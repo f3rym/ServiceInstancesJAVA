@@ -1,6 +1,7 @@
 package ferym.project.service;
 
 import ferym.project.dto.OrderDto;
+import ferym.project.exception.SystemFailureException;
 import ferym.project.mapper.OrderMapper;
 import ferym.project.model.CloudInstance;
 import ferym.project.model.CloudOrder;
@@ -61,7 +62,7 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Инстанс не найден"));
 
         if ("fail".equalsIgnoreCase(username)) {
-            throw new RuntimeException("Имитация сбоя системы! Транзакция должна откатиться.");
+            throw new SystemFailureException("Имитация сбоя.");
         }
 
         CloudOrder order = new CloudOrder();

@@ -18,7 +18,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    // Чтение всех пользователей (решение проблемы N+1 уже заложено в репозитории через EntityGraph)
     @Transactional(readOnly = true)
     public List<UserDto> getAll() {
         return userRepository.findAll().stream()
@@ -42,22 +41,16 @@ public class UserService {
         return userMapper.toDto(savedEntity);
     }
 
-    // Обновление пользователя (полное или только имя)
     @Transactional
     public UserDto update(Long id, UserDto dto) {
         CloudUser entity = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
-        // Обновляем только нужные поля
         entity.setUsername(dto.getUsername());
 
-        // В JPA/Hibernate вызывать save() при обновлении в транзакции не обязательно (Dirty Checking),
-        // но для наглядности кода можно оставить.
         return userMapper.toDto(entity);
     }
 
-    // Удаление пользователя
-    // Благодаря CascadeType.ALL в сущности CloudUser, удаление юзера удалит и все его заказы
     @Transactional
     public void delete(Long id) {
         if (!userRepository.existsById(id)) {

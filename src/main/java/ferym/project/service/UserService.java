@@ -4,12 +4,12 @@ import ferym.project.dto.UserDto;
 import ferym.project.mapper.UserMapper;
 import ferym.project.model.CloudUser;
 import ferym.project.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class UserService {
     public List<UserDto> getAll() {
         return userRepository.findAll().stream()
                 .map(userMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     // Чтение одного пользователя по ID
@@ -30,7 +30,7 @@ public class UserService {
     public UserDto getById(Long id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Пользователь с id " + id + " не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Пользователь с id " + id + " не найден"));
     }
 
     // Создание пользователя
@@ -44,7 +44,7 @@ public class UserService {
     @Transactional
     public UserDto update(Long id, UserDto dto) {
         CloudUser entity = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
 
         entity.setUsername(dto.getUsername());
 
@@ -54,7 +54,7 @@ public class UserService {
     @Transactional
     public void delete(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("Невозможно удалить: пользователь не найден");
+            throw new EntityNotFoundException("Невозможно удалить: пользователь не найден");
         }
         userRepository.deleteById(id);
     }

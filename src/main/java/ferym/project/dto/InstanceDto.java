@@ -1,8 +1,8 @@
 package ferym.project.dto;
 
 import lombok.Data;
-
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class InstanceDto {
@@ -11,9 +11,8 @@ public class InstanceDto {
     private String instanceType;
     private String os;
     private Double price;
-    private String status;
-    private String datacenterName; // Передаем имя ДЦ вместо всего объекта
-    private List<Long> softwareIds; // Только ID установленного софта
+
+    private Set<Long> datacenterIds;
+
+    private List<Long> softwareIds;
 }
-
-

@@ -1,11 +1,14 @@
 package ferym.project.controller;
 
 import ferym.project.dto.InstanceDto;
+import ferym.project.dto.InstanceFilterDto;
 import ferym.project.service.InstanceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -40,5 +43,12 @@ public class InstanceController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         instanceService.delete(id);
+    }
+
+    @GetMapping("/search")
+    public Page<InstanceDto> search(
+            InstanceFilterDto filter,
+            Pageable pageable) {
+        return instanceService.search(filter, pageable);
     }
 }

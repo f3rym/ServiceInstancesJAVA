@@ -2,7 +2,10 @@ package ferym.project.mapper;
 
 import ferym.project.dto.DatacenterDto;
 import ferym.project.model.Datacenter;
+import ferym.project.model.Instance;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class DatacenterMapper {
@@ -15,6 +18,13 @@ public class DatacenterMapper {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setLocation(entity.getLocation());
+
+        if (entity.getInstances() != null) {
+            dto.setInstanceIds(entity.getInstances().stream()
+                    .map(Instance::getId)
+                    .collect(Collectors.toSet()));
+        }
+
         return dto;
     }
 
@@ -27,6 +37,7 @@ public class DatacenterMapper {
         entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setLocation(dto.getLocation());
+
         return entity;
     }
 }

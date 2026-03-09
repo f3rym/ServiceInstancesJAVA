@@ -2,7 +2,7 @@ package ferym.project.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "datacenters")
@@ -17,6 +17,6 @@ public class Datacenter {
     private String name;
     private String location;
 
-    @OneToMany(mappedBy = "datacenter")
-    private List<Instance> instances;
+    @ManyToMany(mappedBy = "datacenters")
+    private Set<Instance> instances;
 }

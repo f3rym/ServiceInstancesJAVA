@@ -25,6 +25,8 @@ public class OrderService {
     private final InstanceRepository instanceRepository;
     private final OrderMapper mapper;
 
+    private static final String INSTANCE_NOT_FOUND = "Инстанс не найден";
+
     @Transactional(readOnly = true)
     public List<OrderDto> getAll() {
         return orderRepository.findAll()
@@ -40,7 +42,7 @@ public class OrderService {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
         Instance instance = instanceRepository.findById(dto.getInstanceId())
-                .orElseThrow(() -> new EntityNotFoundException("Инстанс не найден"));
+                .orElseThrow(() -> new EntityNotFoundException(INSTANCE_NOT_FOUND));
 
         order.setUser(user);
         order.setInstance(instance);
@@ -62,7 +64,7 @@ public class OrderService {
         userRepository.save(user);
 
         Instance instance = instanceRepository.findById(instanceId)
-                .orElseThrow(() -> new EntityNotFoundException("Инстанс не найден"));
+                .orElseThrow(() -> new EntityNotFoundException(INSTANCE_NOT_FOUND));
 
         if ("fail".equalsIgnoreCase(username)) {
             throw new SystemFailureException("Имитация сбоя.");
@@ -82,7 +84,7 @@ public class OrderService {
         userRepository.save(user);
 
         Instance instance = instanceRepository.findById(instanceId)
-                .orElseThrow(() -> new EntityNotFoundException("Инстанс не найден"));
+                .orElseThrow(() -> new EntityNotFoundException(INSTANCE_NOT_FOUND));
 
         // Имитация сбоя
         if ("fail".equalsIgnoreCase(username)) {

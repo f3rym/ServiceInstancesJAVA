@@ -20,10 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
@@ -36,7 +36,7 @@ public class InstanceService {
 
     private static final String INSTANCE_NOT_FOUND = "Инстанс не найден";
 
-    private final Map<InstanceSearchKey, Page<InstanceDto>> cache = new ConcurrentHashMap<>();
+    private final Map<InstanceSearchKey, Page<InstanceDto>> cache = new HashMap<>();
 
     @Transactional(readOnly = true)
     public Page<InstanceDto> search(InstanceFilterDto filter, Pageable pageable) {

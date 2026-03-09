@@ -58,7 +58,7 @@ public class OrderService {
 
     @Transactional
     public void createOrderWithNewUser(String username, Long instanceId) {
-        // 1. Создаем пользователя
+
         User user = new User();
         user.setUsername(username);
         userRepository.save(user);
@@ -78,24 +78,4 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public void createOrderWithoutTransaction(String username, Long instanceId) {
-        User user = new User();
-        user.setUsername(username);
-        userRepository.save(user);
-
-        Instance instance = instanceRepository.findById(instanceId)
-                .orElseThrow(() -> new EntityNotFoundException(INSTANCE_NOT_FOUND));
-
-        // Имитация сбоя
-        if ("fail".equalsIgnoreCase(username)) {
-            throw new SystemFailureException("Имитация сбоя системы! ТРАНЗАКЦИИ НЕТ, отката не будет.");
-        }
-
-        Order order = new Order();
-        order.setUser(user);
-        order.setInstance(instance);
-        order.setCreatedAt(LocalDateTime.now());
-
-        orderRepository.save(order);
-    }
 }

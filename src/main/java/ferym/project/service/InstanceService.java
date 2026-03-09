@@ -10,7 +10,9 @@ import ferym.project.repository.DatacenterRepository;
 import ferym.project.repository.InstanceRepository;
 import ferym.project.repository.SoftwareRepository;
 import ferym.project.util.InstanceSearchKey;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InstanceService {
@@ -44,11 +47,11 @@ public class InstanceService {
         );
 
         if (cache.containsKey(key)) {
-            System.out.println("Using in-memory index");
+            log.info("Using in-memory index");
             return cache.get(key);
         }
 
-        System.out.println("No cashed");
+        log.info("No cashed");
         Page<Instance> entityPage;
 
         if (filter.isUseNative()) {
@@ -79,7 +82,7 @@ public class InstanceService {
     @Transactional(readOnly = true)
     public InstanceDto getById(Long id) {
         return instanceRepository.findById(id).map(mapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Инстанс не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Инстанс не найден"));
     }
 
     @Transactional

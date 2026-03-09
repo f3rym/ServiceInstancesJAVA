@@ -6,6 +6,7 @@ import ferym.project.model.Datacenter;
 import ferym.project.model.Instance;
 import ferym.project.repository.DatacenterRepository;
 import ferym.project.repository.InstanceRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class DatacenterService {
     @Transactional(readOnly = true)
     public DatacenterDto getById(Long id) {
         return datacenterRepository.findById(id).map(mapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Дата-центр не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Дата-центр не найден"));
     }
 
     @Transactional
@@ -40,7 +41,7 @@ public class DatacenterService {
         if (dto.getInstanceIds() != null && !dto.getInstanceIds().isEmpty()) {
             List<Instance> instances = instanceRepository.findAllById(dto.getInstanceIds());
             if (instances.size() != dto.getInstanceIds().size()) {
-                throw new RuntimeException("Некоторые инстансы не найдены");
+                throw new EntityNotFoundException("Некоторые инстансы не найдены");
             }
             entity.setInstances(new HashSet<>(instances));
         }
@@ -51,7 +52,7 @@ public class DatacenterService {
     @Transactional
     public DatacenterDto update(Long id, DatacenterDto dto) {
         Datacenter entity = datacenterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Дата-центр не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Дата-центр не найден"));
 
         entity.setName(dto.getName());
         entity.setLocation(dto.getLocation());

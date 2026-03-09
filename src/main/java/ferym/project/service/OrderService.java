@@ -38,9 +38,9 @@ public class OrderService {
         Order order = new Order();
 
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
         Instance instance = instanceRepository.findById(dto.getInstanceId())
-                .orElseThrow(() -> new RuntimeException("Инстанс не найден"));
+                .orElseThrow(() -> new EntityNotFoundException("Инстанс не найден"));
 
         order.setUser(user);
         order.setInstance(instance);

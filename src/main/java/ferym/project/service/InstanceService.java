@@ -34,6 +34,8 @@ public class InstanceService {
     private final SoftwareRepository softwareRepository;
     private final InstanceMapper mapper;
 
+    private static final String INSTANCE_NOT_FOUND = "Инстанс не найден";
+
     private final Map<InstanceSearchKey, Page<InstanceDto>> cache = new ConcurrentHashMap<>();
 
     @Transactional(readOnly = true)
@@ -82,7 +84,7 @@ public class InstanceService {
     @Transactional(readOnly = true)
     public InstanceDto getById(Long id) {
         return instanceRepository.findById(id).map(mapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Инстанс не найден"));
+                .orElseThrow(() -> new EntityNotFoundException(INSTANCE_NOT_FOUND));
     }
 
     @Transactional
@@ -92,7 +94,7 @@ public class InstanceService {
         if (dto.getDatacenterIds() != null && !dto.getDatacenterIds().isEmpty()) {
             List<Datacenter> datacenters = datacenterRepository.findAllById(dto.getDatacenterIds());
             if (datacenters.size() != dto.getDatacenterIds().size()) {
-                throw new RuntimeException("Один или несколько дата-центров не найдены");
+                throw new EntityNotFoundException("Один или несколько дата-центров не найдены");
             }
             entity.setDatacenters(new HashSet<>(datacenters));
         }
@@ -108,7 +110,7 @@ public class InstanceService {
     @Transactional
     public InstanceDto update(Long id, InstanceDto dto) {
         Instance entity = instanceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Инстанс не найден"));
+                .orElseThrow(() -> new EntityNotFoundException(INSTANCE_NOT_FOUND));
 
         entity.setName(dto.getName());
         entity.setInstanceType(dto.getInstanceType());

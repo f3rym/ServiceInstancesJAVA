@@ -37,6 +37,6 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     public String transaction(@RequestParam String username, @RequestParam Long instanceId) {
         orderService.createOrderWithNewUser(username, instanceId);
-        return "Успех! Пользователь и заказ созданы: " + username;
+        return "Success, order created!";
     }
 }

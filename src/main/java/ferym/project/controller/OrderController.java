@@ -2,6 +2,7 @@ package ferym.project.controller;
 
 import ferym.project.dto.OrderDto;
 import ferym.project.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto create(@RequestBody OrderDto dto) {
+    public OrderDto create(@Valid @RequestBody OrderDto dto) {
         return orderService.create(dto);
     }
 

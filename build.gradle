@@ -25,64 +25,13 @@ repositories {
     mavenCentral()
 }
 
-/* Закомментировано: настройки и задачи чекстайла
-checkstyle {
-    toolVersion = '10.12.5'
-    configFile = file("${project.rootDir}/checkstyle.xml")
-    ignoreFailures = false
-    showViolations = true
-    maxWarnings = 0
-}
-
-tasks.withType(Checkstyle).configureEach {
-    reports {
-        xml.required = false
-        html.required = true
-    }
-    doFirst {
-        ignoreFailures = false
-    }
-}
-
-tasks.named('bootRun') {
-    dependsOn 'checkstyleMain'
-    mustRunAfter 'checkstyleMain'
-}
-
-tasks.named('build') {
-    dependsOn 'checkstyleMain', 'checkstyleTest'
-    mustRunAfter 'checkstyleMain', 'checkstyleTest'
-}
-
-tasks.named('compileJava') {
-    finalizedBy 'checkstyleMain'
-}
-
-tasks.named('compileTestJava') {
-    finalizedBy 'checkstyleTest'
-}
-
-tasks.named('checkstyleMain') {
-    doLast {
-        if (state.failure != null) {
-            throw new GradleException("Checkstyle Main failed: Please fix all violations")
-        }
-    }
-}
-
-tasks.named('checkstyleTest') {
-    doLast {
-        if (state.failure != null) {
-            throw new GradleException("Checkstyle Test failed: Please fix all violations")
-        }
-    }
-}
-*/
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-aop:3.4.3'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'

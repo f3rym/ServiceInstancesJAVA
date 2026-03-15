@@ -2,6 +2,7 @@ package ferym.project.controller;
 
 import ferym.project.dto.UserDto;
 import ferym.project.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@RequestBody UserDto dto) {
+    public UserDto create(@Valid @RequestBody UserDto dto) {
         return userService.create(dto);
     }
 

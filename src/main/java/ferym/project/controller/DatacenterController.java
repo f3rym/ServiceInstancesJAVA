@@ -2,6 +2,7 @@ package ferym.project.controller;
 
 import ferym.project.dto.DatacenterDto;
 import ferym.project.service.DatacenterService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class DatacenterController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DatacenterDto create(@RequestBody DatacenterDto dto) {
+    public DatacenterDto create(@Valid @RequestBody DatacenterDto dto) {
         return datacenterService.create(dto);
     }
 

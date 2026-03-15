@@ -2,6 +2,7 @@ package ferym.project.controller;
 
 import ferym.project.dto.SoftwareDto;
 import ferym.project.service.SoftwareService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class SoftwareController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SoftwareDto create(@RequestBody SoftwareDto dto) {
+    public SoftwareDto create(@Valid @RequestBody SoftwareDto dto) {
         return softwareService.create(dto);
     }
 

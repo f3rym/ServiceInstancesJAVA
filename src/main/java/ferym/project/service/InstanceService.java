@@ -19,8 +19,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +34,7 @@ public class InstanceService {
 
     private static final String INSTANCE_NOT_FOUND = "Инстанс не найден";
 
-    private final Map<InstanceSearchKey, Page<InstanceDto>> cache = new HashMap<>();
+    private final Map<InstanceSearchKey, Page<InstanceDto>> instanceCache;
 
     @Transactional(readOnly = true)
     public Page<InstanceDto> search(InstanceFilterDto filter, Pageable pageable) {
@@ -48,9 +46,9 @@ public class InstanceService {
                 pageable.getPageSize()
         );
 
-        if (cache.containsKey(key)) {
+        if (instanceCache.containsKey(key)) {
             log.info("Using in-memory index");
-            return cache.get(key);
+            return instanceCache.get(key);
         }
 
         log.info("No cashed");
@@ -69,7 +67,7 @@ public class InstanceService {
 
         Page<InstanceDto> dtoPage = new PageImpl<>(instanceDto, pageable, entityPage.getTotalElements());
 
-        cache.put(key, dtoPage);
+        instanceCache.put(key, dtoPage);
 
         return dtoPage;
     }
@@ -103,7 +101,7 @@ public class InstanceService {
             List<Software> softList = softwareRepository.findAllById(dto.getSoftwareIds());
             entity.setInstalledSoftware(new HashSet<>(softList));
         }
-        cache.clear();
+        instanceCache.clear();
         return mapper.toDto(instanceRepository.save(entity));
     }
 
@@ -126,13 +124,13 @@ public class InstanceService {
             List<Software> softList = softwareRepository.findAllById(dto.getSoftwareIds());
             entity.setInstalledSoftware(new HashSet<>(softList));
         }
-        cache.clear();
+        instanceCache.clear();
         return mapper.toDto(instanceRepository.save(entity));
     }
 
     @Transactional
     public void delete(Long id) {
         instanceRepository.deleteById(id);
-        cache.clear();
+        instanceCache.clear();
     }
 }

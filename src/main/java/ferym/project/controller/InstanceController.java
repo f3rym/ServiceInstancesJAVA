@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/instances")
 @RequiredArgsConstructor
-@Tag(name = "Инстансы", description = "Управление облачными серверами") // Пункт 6 (Swagger)
+@Tag(name = "Инстансы", description = "Управление облачными серверами")
 public class InstanceController {
 
     private final InstanceService instanceService;

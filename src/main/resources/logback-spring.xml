@@ -29,4 +29,7 @@
 </root>
 
 <logger name="ferym.project" level="DEBUG"/>
+    <logger name="org.springframework.web.servlet.PageNotFound" level="WARN" />
+    <logger name="org.springframework.web.servlet.resource.NoResourceFoundException" level="WARN" />
 </configuration>
+

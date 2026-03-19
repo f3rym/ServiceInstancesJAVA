@@ -25,7 +25,6 @@ public class UserService {
                 .toList();
     }
 
-    // Чтение одного пользователя по ID
     @Transactional(readOnly = true)
     public UserDto getById(Long id) {
         return userRepository.findById(id)
@@ -33,7 +32,6 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь с id " + id + " не найден"));
     }
 
-    // Создание пользователя
     @Transactional
     public UserDto create(UserDto dto) {
         User entity = userMapper.toEntity(dto);

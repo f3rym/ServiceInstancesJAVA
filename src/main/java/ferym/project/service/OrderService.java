@@ -24,6 +24,7 @@ public class OrderService {
     private final UserRepository userRepository;
     private final InstanceRepository instanceRepository;
     private final OrderMapper mapper;
+    private final StatisticsService statisticsService;
 
     private static final String INSTANCE_NOT_FOUND = "Инстанс не найден";
 
@@ -36,29 +37,27 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto create(OrderDto dto) {
-        Order order = new Order();
+    public List<OrderDto> createOrdersBulk(List<OrderDto> dtos) {
+        return dtos.stream()
+                .map(dto -> {
+                    User user = userRepository.findById(dto.getUserId())
+                            .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+                    Instance instance = instanceRepository.findById(dto.getInstanceId())
+                            .orElseThrow(() -> new EntityNotFoundException(INSTANCE_NOT_FOUND));
 
-        User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
-        Instance instance = instanceRepository.findById(dto.getInstanceId())
-                .orElseThrow(() -> new EntityNotFoundException(INSTANCE_NOT_FOUND));
+                    Order order = new Order();
+                    order.setUser(user);
+                    order.setInstance(instance);
+                    order.setCreatedAt(LocalDateTime.now());
 
-        order.setUser(user);
-        order.setInstance(instance);
-        order.setCreatedAt(LocalDateTime.now());
-
-        return mapper.toDto(orderRepository.save(order));
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        orderRepository.deleteById(id);
+                    statisticsService.incrementSafe();
+                    return mapper.toDto(orderRepository.save(order));
+                })
+                .toList();
     }
 
     @Transactional
     public void createOrderWithNewUser(String username, Long instanceId) {
-
         User user = new User();
         user.setUsername(username);
         userRepository.save(user);
@@ -78,4 +77,8 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        orderRepository.deleteById(id);
+    }
 }

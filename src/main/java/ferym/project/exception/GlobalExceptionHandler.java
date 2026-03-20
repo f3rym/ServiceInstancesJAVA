@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,10 +17,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ApiError> handleNotFound(NoResourceFoundException ex, HttpServletRequest request) {
-        log.warn("404 Not Found: {} на пути {}", ex.getMessage(), request.getRequestURI());
+        log.warn("404 Not Found: {} | Path: {}", ex.getMessage(), request.getRequestURI());
 
         ApiError apiError = new ApiError(
                 LocalDateTime.now(),
@@ -33,21 +31,26 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(fieldName, message);
-        });
+
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage())
+        );
+
+        log.warn("400 Validation Failed: Path: {} | Errors: {}", request.getRequestURI(), errors);
 
         ApiError apiError = new ApiError(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Validation Failed", "invalidate date",
-                request.getRequestURI(), errors
+                "Validation Failed",
+                "Validation error occurred",
+                request.getRequestURI(),
+                errors
         );
+
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 }

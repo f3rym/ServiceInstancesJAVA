@@ -19,11 +19,12 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/bulk")
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Массовое создание заказов", description = "Демонстрация Transactional и Stream API")
-    public List<OrderDto> createBulk(@RequestBody List<OrderDto> dtos) {
-        return orderService.createOrdersBulk(dtos);
+    public List<OrderDto> createBulk(
+            @RequestBody List<OrderDto> dtos,
+            @RequestParam(defaultValue = "true") boolean trl) {
+        return orderService.createOrdersBulk(dtos, trl);
     }
+
 
     @GetMapping
     public List<OrderDto> getAll() {

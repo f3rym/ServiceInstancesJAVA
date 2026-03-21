@@ -10,7 +10,6 @@ class ProjectF3CloudTests {
 
     @Test
     void contextLoads() {
-        // No test for my program
     }
 
 }

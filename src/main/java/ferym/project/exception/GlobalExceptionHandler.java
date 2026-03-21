@@ -32,6 +32,51 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ResponseEntity<ApiError> handleConflict(org.springframework.dao.DataIntegrityViolationException ex,
+                                                   HttpServletRequest request) {
+        log.error("409 Conflict: {} | Path: {}", ex.getMessage(), request.getRequestURI());
+
+        ApiError apiError = new ApiError(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Conflict",
+                "Нарушение целостности данных (возможно, такой объект уже существует)",
+                request.getRequestURI(),
+                null
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(jakarta.persistence.EntityNotFoundException.class)
+    public ResponseEntity<ApiError> handleEntityNotFound(jakarta.persistence.EntityNotFoundException ex,
+                                                         HttpServletRequest request) {
+        log.warn("404 Entity Not Found: {} | Path: {}", ex.getMessage(), request.getRequestURI());
+
+        ApiError apiError = new ApiError(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Entity Not Found",
+                ex.getMessage(),
+                request.getRequestURI(),
+                null
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(ferym.project.exception.SystemFailureException.class)
+    public ResponseEntity<ApiError> handleSystemFailure(ferym.project.exception.SystemFailureException ex,
+                                                        HttpServletRequest request) {
+        log.error("500 System Failure: {} | Path: {}", ex.getMessage(), request.getRequestURI());
+
+        ApiError apiError = new ApiError(
+                LocalDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "System Error",
+                ex.getMessage(),
+                request.getRequestURI(),
+                null
+        );
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
         Map<String, String> errors = new HashMap<>();

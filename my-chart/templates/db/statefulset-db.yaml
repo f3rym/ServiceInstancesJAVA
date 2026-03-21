@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{.Release.Name }}-postgres"
+spec:
+  serviceName: "{{ .Release.Name }}-{{ .Values.db.service.name }}"
+  replicas: {{ .Values.db.replicas }}
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-postgres"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-postgres"
+    spec:
+      containers:
+        - name: "{{ .Release.Name }}-postgres-container"
+          image: {{ .Values.db.image }}:{{ .Values.db.tag}}
+          ports:
+            - containerPort: {{ .Values.db.port }}
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.credentials.secretName }}
+                  key: database
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.credentials.secretName }}
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.credentials.secretName }}
+                  key: password
+          volumeMounts:
+            - name: pgdata
+              mountPath: {{ .Values.db.mountPath }}
+          resources:
+            requests:
+              cpu: "{{ .Values.db.resources.requests.cpu }}"
+              memory: "{{ .Values.db.resources.requests.memory }}"
+            limits:
+              cpu: "{{ .Values.db.resources.limits.cpu }}"
+              memory: "{{ .Values.db.resources.limits.memory }}"
+      volumes:
+        - name: pgdata
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-pgdata-pvc

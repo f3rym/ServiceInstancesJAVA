@@ -11,7 +11,7 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Service for order instances API")
+                        .title("Service for order instances API + k8s")
                         .version("1.0")
                         .description("Documentation"));
     }

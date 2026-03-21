@@ -55,7 +55,7 @@ public class InstanceController {
     }
 
     @GetMapping("/search")
-    @Operation(summary = "Поиск с фильтрацией и пагинацией", description = "Пункт 3 (Pageable)")
+    @Operation(summary = "Поиск с фильтрацией и пагинацией")
     public Page<InstanceDto> search(
             InstanceFilterDto filter,
             Pageable pageable) {

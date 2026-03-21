@@ -27,6 +27,7 @@ public class OrderService {
     private final StatisticsService statisticsService;
 
     private static final String INSTANCE_NOT_FOUND = "Инстанс не найден";
+    private final org.springframework.transaction.support.TransactionTemplate transactionTemplate;
 
     @Transactional(readOnly = true)
     public List<OrderDto> getAll() {
@@ -36,8 +37,15 @@ public class OrderService {
                 .toList();
     }
 
-    @Transactional
-    public List<OrderDto> createOrdersBulk(List<OrderDto> dtos) {
+    public List<OrderDto> createOrdersBulk(List<OrderDto> dtos, boolean useTransaction) {
+        if (useTransaction) {
+            return transactionTemplate.execute(status -> processBulk(dtos));
+        } else {
+            return processBulk(dtos);
+        }
+    }
+
+    private List<OrderDto> processBulk(List<OrderDto> dtos) {
         return dtos.stream()
                 .map(dto -> {
                     User user = userRepository.findById(dto.getUserId())

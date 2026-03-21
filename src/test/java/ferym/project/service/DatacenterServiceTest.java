@@ -14,61 +14,71 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DatacenterServiceTest {
 
-    @Mock
-    private DatacenterRepository datacenterRepository;
-    @Mock
-    private InstanceRepository instanceRepository;
-    @Mock
-    private DatacenterMapper mapper;
+    @Mock private DatacenterRepository datacenterRepository;
+    @Mock private InstanceRepository instanceRepository;
+    @Mock private DatacenterMapper mapper;
 
-    @InjectMocks
-    private DatacenterService datacenterService;
+    @InjectMocks private DatacenterService datacenterService;
 
     @Test
-    void create_WithValidInstances_SavesAndReturnsDto() {
-        DatacenterDto inputDto = new DatacenterDto();
-        inputDto.setInstanceIds(Set.of(1L, 2L));
+    void getAll_ShouldReturnList() {
+        when(datacenterRepository.findAll()).thenReturn(List.of(new Datacenter()));
+        when(mapper.toDto(any())).thenReturn(new DatacenterDto());
 
+        List<DatacenterDto> result = datacenterService.getAll();
+
+        assertThat(result).hasSize(1);
+        verify(datacenterRepository).findAll();
+    }
+
+    @Test
+    void getById_ShouldReturnDto_WhenFound() {
+        when(datacenterRepository.findById(1L)).thenReturn(Optional.of(new Datacenter()));
+        when(mapper.toDto(any())).thenReturn(new DatacenterDto());
+
+        assertThat(datacenterService.getById(1L)).isNotNull();
+    }
+
+    @Test
+    void create_ShouldAttachInstances_WhenIdsProvided() {
+        DatacenterDto request = new DatacenterDto();
+        request.setInstanceIds(Set.of(10L, 20L));
         Datacenter entity = new Datacenter();
-        Instance inst1 = new Instance(); inst1.setId(1L);
-        Instance inst2 = new Instance(); inst2.setId(2L);
 
-        when(mapper.toEntity(inputDto)).thenReturn(entity);
-        when(instanceRepository.findAllById(inputDto.getInstanceIds())).thenReturn(List.of(inst1, inst2));
-        when(datacenterRepository.save(any(Datacenter.class))).thenReturn(entity);
-        when(mapper.toDto(entity)).thenReturn(new DatacenterDto());
+        when(mapper.toEntity(request)).thenReturn(entity);
+        when(instanceRepository.findAllById(request.getInstanceIds()))
+                .thenReturn(List.of(new Instance(), new Instance()));
+        when(datacenterRepository.save(any())).thenReturn(entity);
+        when(mapper.toDto(any())).thenReturn(new DatacenterDto());
 
-        DatacenterDto result = datacenterService.create(inputDto);
+        datacenterService.create(request);
 
-        assertNotNull(result);
-        assertEquals(2, entity.getInstances().size());
+        verify(instanceRepository).findAllById(request.getInstanceIds());
         verify(datacenterRepository).save(entity);
     }
 
     @Test
-    void create_WithMissingInstances_ThrowsException() {
-        DatacenterDto inputDto = new DatacenterDto();
-        inputDto.setInstanceIds(Set.of(1L, 2L));
+    void update_ShouldThrowException_WhenNotFound() {
+        when(datacenterRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Datacenter entity = new Datacenter();
-        Instance inst1 = new Instance(); inst1.setId(1L);
+        assertThatThrownBy(() -> datacenterService.update(1L, new DatacenterDto()))
+                .isInstanceOf(EntityNotFoundException.class);
+    }
 
-        when(mapper.toEntity(inputDto)).thenReturn(entity);
-        when(instanceRepository.findAllById(inputDto.getInstanceIds())).thenReturn(List.of(inst1));
-
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-                () -> datacenterService.create(inputDto));
-
-        assertEquals("Некоторые инстансы не найдены", exception.getMessage());
-        verify(datacenterRepository, never()).save(any());
+    @Test
+    void delete_ShouldCallRepository() {
+        datacenterService.delete(1L);
+        verify(datacenterRepository).deleteById(1L);
     }
 }

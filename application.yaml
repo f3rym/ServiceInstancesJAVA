@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-helm-app
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: backend=f3rym/instance-services-backend:latest
+    argocd-image-updater.argoproj.io/backend.update-strategy: digest
+#    argocd-image-updater.argoproj.io/apache.update-strategy: digest
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
+    argocd-image-updater.argoproj.io/write-back-target: git-branch:main
+    argocd-image-updater.argoproj.io/backend.helm.image-name: backend.image
+#    argocd-image-updater.argoproj.io/apache.helm.image-name: apache2.image
+    argocd-image-updater.argoproj.io/backend.helm.image-tag: backend.tag
+#    argocd-image-updater.argoproj.io/apache.helm.image-tag: apache2.tag
+spec:
+  project: default
+  source:
+    repoURL: 'git@github.com:f3rym/argo-cd-test.git'
+    targetRevision: HEAD
+    path: my-chart
+
+    helm:
+      valueFiles:
+        - values.yaml
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: app
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

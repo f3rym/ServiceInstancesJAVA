@@ -48,11 +48,11 @@ db:
     port: 5432
   resources:
     requests:
+      cpu: 125m
+      memory: 128Mi
+    limits:
       cpu: 250m
       memory: 256Mi
-    limits:
-      cpu: 500m
-      memory: 512Mi
   credentials:
     secretName: postgres-credentials
   storageClass: local-path
@@ -62,11 +62,11 @@ db:
 
 hpa:
   minReplicas: 1
-  maxReplicas: 2
+  maxReplicas: 3
   cpu:
-    target: 60
+    target: 80
   memory:
-    target: 60
+    target: 80
 
 frontend:
   image: f3rym/instance-services-frontend

@@ -10,11 +10,15 @@ import ferym.project.repository.InstanceRepository;
 import ferym.project.repository.OrderRepository;
 import ferym.project.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.shadow.de.siegmar.fastcsv.util.Nullable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,18 +31,27 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
 
+    @Mock private org.springframework.transaction.TransactionStatus transactionStatus;
     @Mock private OrderRepository orderRepository;
     @Mock private UserRepository userRepository;
     @Mock private InstanceRepository instanceRepository;
     @Mock private OrderMapper mapper;
     @Mock private StatisticsService statisticsService;
+    @Mock private TransactionTemplate transactionTemplate;
 
     @InjectMocks
     private OrderService orderService;
+    @Nullable
+    @BeforeEach
+    void setUp() {
+        lenient().when(transactionTemplate.execute(any())).thenAnswer(invocation -> {
+            TransactionCallback<?> callback = invocation.getArgument(0);
+            return callback.doInTransaction(transactionStatus);
+        });
+    }
 
     @Test
     void createOrdersBulk_ShouldCreateMultipleOrders_WhenValidDataProvided() {
-
         OrderDto dto = new OrderDto();
         dto.setUserId(1L);
         dto.setInstanceId(10L);

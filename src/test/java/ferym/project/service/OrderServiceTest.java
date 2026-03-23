@@ -75,12 +75,15 @@ class OrderServiceTest {
 
     @Test
     void createOrdersBulk_ShouldThrowException_WhenUserNotFound() {
+
         OrderDto dto = new OrderDto();
         dto.setUserId(99L);
 
+        List<OrderDto> dtoList = List.of(dto);
+
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> orderService.createOrdersBulk(List.of(dto), true))
+        assertThatThrownBy(() -> orderService.createOrdersBulk(dtoList, true))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("Пользователь не найден");
 

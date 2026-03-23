@@ -70,12 +70,17 @@ class DatacenterServiceTest {
 
     @Test
     void update_ShouldThrowException_WhenNotFound() {
-        when(datacenterRepository.findById(1L)).thenReturn(Optional.empty());
+        Long id = 1L;
+        DatacenterDto dto = new DatacenterDto();
 
-        assertThatThrownBy(() -> datacenterService.update(1L, new DatacenterDto()))
+        when(datacenterRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> datacenterService.update(id, dto))
                 .isInstanceOf(EntityNotFoundException.class);
-    }
 
+        verify(datacenterRepository, never()).save(any());
+        verifyNoInteractions(mapper);
+    }
     @Test
     void delete_ShouldCallRepository() {
         datacenterService.delete(1L);

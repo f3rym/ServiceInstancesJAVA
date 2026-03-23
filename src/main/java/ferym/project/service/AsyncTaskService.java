@@ -21,7 +21,7 @@ public class AsyncTaskService {
             Thread.sleep(15000);
             taskStorage.put(taskId, "COMPLETED");
             log.info("Task {} finished successfully", taskId);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException _) {
             taskStorage.put(taskId, "ERROR");
             log.error("Task {} interrupted", taskId);
             Thread.currentThread().interrupt();

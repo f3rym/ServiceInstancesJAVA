@@ -2,10 +2,12 @@ package ferym.project.controller;
 
 import ferym.project.service.AsyncTaskService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class AsyncController {
     public String startTask() {
         String taskId = UUID.randomUUID().toString();
         asyncTaskService.executeLongTask(taskId)
-                .thenAccept(id -> System.out.println("Task " + id + " успешно завершена асинхронно."));
+                .thenAccept(id -> log.info("Task {} успешно завершена асинхронно.", id));
         return taskId;
     }
 

@@ -41,7 +41,6 @@ public class StatisticsController {
 
     @GetMapping
     public String getStats() {
-        return "Safe: " + statisticsService.getSafeCount() +
-                " | Unsafe: " + statisticsService.getUnsafeCount();
+        return "Safe: " + statisticsService.getSafeCount() + " | Unsafe: " + statisticsService.getUnsafeCount();
     }
 }

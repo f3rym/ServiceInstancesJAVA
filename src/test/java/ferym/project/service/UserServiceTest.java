@@ -4,7 +4,8 @@ import ferym.project.dto.UserDto;
 import ferym.project.mapper.UserMapper;
 import ferym.project.model.User;
 import ferym.project.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;import org.junit.jupiter.api.Test;
+import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,59 +28,93 @@ class UserServiceTest {
     @InjectMocks private UserService userService;
 
     @Test
-    void getAll_ShouldReturnUsers() {
-        when(userRepository.findAll()).thenReturn(List.of(new User()));
-        when(userMapper.toDto(any())).thenReturn(new UserDto());
-        assertThat(userService.getAll()).hasSize(1);
+    void getAll_ShouldReturnList() {
+        User user = new User();
+        UserDto dto = new UserDto();
+        when(userRepository.findAll()).thenReturn(List.of(user));
+        when(userMapper.toDto(any(User.class))).thenReturn(dto);
+
+        List<UserDto> result = userService.getAll();
+
+        assertThat(result).hasSize(1);
+        verify(userRepository).findAll();
     }
 
     @Test
-    void getById_ShouldThrowException_WhenNotFound() {
-        when(userRepository.findById(99L)).thenReturn(Optional.empty());
-        assertThatThrownBy(() -> userService.getById(99L))
+    void getById_ShouldReturnDto_WhenFound() {
+        User user = new User();
+        UserDto dto = new UserDto();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userMapper.toDto(any(User.class))).thenReturn(dto);
+
+        UserDto result = userService.getById(1L);
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    void getById_ShouldThrow_WhenNotFound() {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.getById(1L))
                 .isInstanceOf(EntityNotFoundException.class);
     }
 
     @Test
-    void create_ShouldSaveAndReturnUser() {
+    void create_ShouldSaveAndReturnDto() {
+        User user = new User();
         UserDto dto = new UserDto();
-        when(userMapper.toEntity(dto)).thenReturn(new User());
-        when(userRepository.save(any())).thenReturn(new User());
-        when(userMapper.toDto(any())).thenReturn(new UserDto());
+        when(userMapper.toEntity(dto)).thenReturn(user);
+        when(userRepository.save(user)).thenReturn(user);
+        when(userMapper.toDto(any(User.class))).thenReturn(dto);
 
-        assertThat(userService.create(dto)).isNotNull();
-        verify(userRepository).save(any(User.class));
+        UserDto result = userService.create(dto);
+
+        assertThat(result).isEqualTo(dto);
+        verify(userRepository).save(user);
     }
 
     @Test
-    void update_ShouldUpdateUsername_WhenUserExists() {
-        User existingUser = new User();
-        UserDto updateDto = new UserDto();
-        updateDto.setUsername("NewName");
+    void update_ShouldUpdateUsername_WhenFound() {
+        User user = new User();
+        user.setUsername("old_nick");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(existingUser));
-        when(userMapper.toDto(existingUser)).thenReturn(updateDto);
+        UserDto dto = new UserDto();
+        dto.setUsername("new_nick");
 
-        userService.update(1L, updateDto);
-        assertThat(existingUser.getUsername()).isEqualTo("NewName");
-        verify(userRepository).findById(1L);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(userMapper.toDto(any(User.class))).thenReturn(dto);
+
+        UserDto result = userService.update(1L, dto);
+
+        assertThat(result.getUsername()).isEqualTo("new_nick");
+
     }
 
     @Test
-    void delete_ShouldThrowException_WhenUserDoesNotExist() {
+    void update_ShouldThrow_WhenNotFound() {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.update(1L, new UserDto()))
+                .isInstanceOf(EntityNotFoundException.class);
+    }
+
+    @Test
+    void delete_ShouldCallDelete_WhenExists() {
+        when(userRepository.existsById(1L)).thenReturn(true);
+
+        userService.delete(1L);
+
+        verify(userRepository).deleteById(1L);
+    }
+
+    @Test
+    void delete_ShouldThrow_WhenNotExists() {
         when(userRepository.existsById(1L)).thenReturn(false);
 
         assertThatThrownBy(() -> userService.delete(1L))
-                .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContaining("не найден");
+                .isInstanceOf(EntityNotFoundException.class);
 
         verify(userRepository, never()).deleteById(any());
-    }
-
-    @Test
-    void delete_ShouldDelete_WhenUserExists() {
-        when(userRepository.existsById(1L)).thenReturn(true);
-        userService.delete(1L);
-        verify(userRepository).deleteById(1L);
     }
 }

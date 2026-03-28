@@ -98,13 +98,13 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
   hosts:
-    - host: api-f3rym.ddns.net
+    - host: api-ferym.ddns.net
       paths:
         - path: /
           pathType: Prefix
           serviceName: backend
           port: 8080
   tls:
-    - secretName: "api-f3rym-site-tls"
+    - secretName: "api-ferym-site-tls"
       hosts:
-        - api-f3rym.ddns.net
+        - api-ferym.ddns.net

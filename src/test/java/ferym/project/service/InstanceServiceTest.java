@@ -185,8 +185,11 @@ class InstanceServiceTest {
 
     @Test
     void update_ShouldThrow_WhenInstanceNotFound() {
+
+        InstanceDto dto = new InstanceDto();
         when(instanceRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThatThrownBy(() -> instanceService.update(1L, new InstanceDto()))
+
+        assertThatThrownBy(() -> instanceService.update(1L, dto))
                 .isInstanceOf(EntityNotFoundException.class);
     }
 

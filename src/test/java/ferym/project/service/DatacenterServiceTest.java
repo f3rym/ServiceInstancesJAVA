@@ -174,9 +174,10 @@ class DatacenterServiceTest {
 
     @Test
     void update_ShouldThrow_WhenNotFound() {
+        DatacenterDto dto = new DatacenterDto();
         when(datacenterRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> datacenterService.update(1L, new DatacenterDto()))
+        assertThatThrownBy(() -> datacenterService.update(1L, dto))
                 .isInstanceOf(EntityNotFoundException.class);
     }
 

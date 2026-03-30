@@ -93,9 +93,12 @@ class UserServiceTest {
 
     @Test
     void update_ShouldThrow_WhenNotFound() {
+        
+        UserDto dto = new UserDto();
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userService.update(1L, new UserDto()))
+
+        assertThatThrownBy(() -> userService.update(1L, dto))
                 .isInstanceOf(EntityNotFoundException.class);
     }
 

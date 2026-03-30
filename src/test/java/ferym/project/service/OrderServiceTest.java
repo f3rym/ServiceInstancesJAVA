@@ -98,11 +98,14 @@ class OrderServiceTest {
 
     @Test
     void createOrdersBulk_ShouldThrow_WhenUserNotFoundInBulk() {
+
         OrderDto dto = new OrderDto();
         dto.setUserId(99L);
+        List<OrderDto> dtoList = List.of(dto);
+
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> orderService.createOrdersBulk(List.of(dto), false))
+        assertThatThrownBy(() -> orderService.createOrdersBulk(dtoList, false))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("Пользователь не найден");
     }
@@ -112,11 +115,12 @@ class OrderServiceTest {
         OrderDto dto = new OrderDto();
         dto.setUserId(1L);
         dto.setInstanceId(99L);
+        List<OrderDto> dtoList = List.of(dto);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
         when(instanceRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> orderService.createOrdersBulk(List.of(dto), false))
+        assertThatThrownBy(() -> orderService.createOrdersBulk(dtoList, false))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("Инстанс не найден");
     }

@@ -7,7 +7,7 @@ import { Modal } from '@/components/Modal'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 
 const COMMON_TYPES = ['t3.micro', 't3.small', 't3.medium', 't3.large', 'm5.xlarge', 'c5.2xlarge']
-const COMMON_OS    = ['Ubuntu 22.04', 'Ubuntu 20.04', 'Debian 12', 'CentOS 9', 'AlmaLinux 9', 'Windows Server 2022']
+const COMMON_OS    = ['FeOS','Ubuntu 22.04', 'Ubuntu 20.04', 'Debian 12', 'CentOS 9', 'AlmaLinux 9', 'Windows Server 2022']
 
 const EMPTY: InstanceDto = {
   name: '',

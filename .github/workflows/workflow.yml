@@ -64,3 +64,8 @@ jobs:
           tags: |
             f3rym/instance-services-${{ matrix.image }}:latest
             f3rym/instance-services-${{ matrix.image }}:${{ github.sha }}
+
+      - name: Deploy to Railway
+        run: npx @railway/cli up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

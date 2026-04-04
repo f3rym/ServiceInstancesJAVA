@@ -12,7 +12,9 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
   backend:
-    image: f3rym/instance-services-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: backend
     env_file:
       - .env
@@ -26,7 +28,9 @@ services:
       db:
         condition: service_healthy
   frontend:
-    image: f3rym/instance-services-frontend
+    build:
+      context: ./my-aws-gui
+      dockerfile: Dockerfile
     container_name: frontend
     ports:
       - 80:80

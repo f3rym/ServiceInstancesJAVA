@@ -9,6 +9,7 @@ on:
       - 'build.gradle'
       - 'Dockerfile'
       - '.github/workflows/workflow.yml'
+      - 'my-aws-gui/**'
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -17,8 +18,13 @@ jobs:
       packages: write
     strategy:
       matrix:
-        image:
-          - backend
+        include:
+          - image: backend
+            context: .
+            dockerfile: Dockerfile
+          - image: frontend
+            context: ./my-aws-gui
+            dockerfile: ./my-aws-gui/Dockerfile
     steps:
       - name: copy-repo
         uses: actions/checkout@v3
@@ -50,7 +56,8 @@ jobs:
       - name: build + push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max

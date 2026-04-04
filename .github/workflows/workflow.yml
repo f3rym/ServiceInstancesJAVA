@@ -65,7 +65,10 @@ jobs:
             f3rym/instance-services-${{ matrix.image }}:latest
             f3rym/instance-services-${{ matrix.image }}:${{ github.sha }}
 
-      - name: Deploy to Railway
-        run: npx @railway/cli up
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli
+
+      - name: Redploy Backend
+        run: railway redeploy -s ${{ matrix.image }} -y
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_TOKEN: 36515c07-0302-4441-bf13-f8152bfcb99f

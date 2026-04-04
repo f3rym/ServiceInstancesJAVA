@@ -75,9 +75,6 @@ export function Instances({ toast }: Props) {
       .then((p) => {
         setPage(p)
         setAllRows(p.content)
-        if (p.totalElements === 0) {
-          setApiDebug('API вернул 0 элементов. Проверьте: 1) данные в БД 2) @JsonIgnoreProperties на моделях 3) маппер installedSoftware→softwareIds')
-        }
       })
       .catch((e) => {
         setError(e.message)

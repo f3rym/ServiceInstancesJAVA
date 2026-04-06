@@ -17,6 +17,9 @@ public class AsyncTaskService {
     public CompletableFuture<String> executeLongTask(String taskId) {
         taskStorage.put(taskId, "RUNNING");
         try {
+            if (taskId.contains("fail")) {
+                throw new InterruptedException("Simulated failure");
+            }
             log.info("Starting async task with ID: {}", taskId);
             Thread.sleep(15000);
             taskStorage.put(taskId, "COMPLETED");

@@ -23,4 +23,9 @@ public class StatisticsService {
     public long getUnsafeCount() {
         return unsafeCounter;
     }
+
+    public void reset() {
+        unsafeCounter = 0;
+        safeCounter.set(0);
+    }
 }

@@ -28,7 +28,7 @@ services:
       db:
         condition: service_healthy
   frontend:
-    image: f3rym/instance-services-frontend
+    image: f3rym/instance-services-frontend:395b07a65cf05af30dd88ef15554d15985f1d4b3
     container_name: frontend
     ports:
       - 80:80

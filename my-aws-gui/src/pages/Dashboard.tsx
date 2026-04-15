@@ -44,10 +44,10 @@ export function Dashboard() {
 
   const cards = [
     { to: '/instances',   label: 'Инстансы',    value: counts?.instances,   sub: `avg $${counts?.avgPrice.toFixed(2)}/ч`,   dot: '#58a6ff' },
-    { to: '/datacenters', label: 'Дата-центры',  value: counts?.datacenters, sub: 'ManyToMany ↔ Instances',                   dot: '#3fb950' },
-    { to: '/software',    label: 'ПО',           value: counts?.software,    sub: 'ManyToMany ↔ Instances',                   dot: '#bc8cff' },
-    { to: '/users',       label: 'Пользователи', value: counts?.users,       sub: 'OneToMany → Orders',                       dot: '#ff9f43' },
-    { to: '/orders',      label: 'Заказы',       value: counts?.orders,      sub: 'userId + instanceId',                      dot: '#39d353' },
+    { to: '/datacenters', label: 'Дата-центры',  value: counts?.datacenters, sub: 'Локации и ресурсы',                        dot: '#3fb950' },
+    { to: '/software',    label: 'ПО',           value: counts?.software,    sub: 'Каталог программ',                         dot: '#bc8cff' },
+    { to: '/users',       label: 'Пользователи', value: counts?.users,       sub: 'Учётные записи',                           dot: '#ff9f43' },
+    { to: '/orders',      label: 'Заказы',       value: counts?.orders,      sub: 'Аренда серверов',                          dot: '#39d353' },
   ]
 
   const relations = [
@@ -55,19 +55,19 @@ export function Dashboard() {
       title: 'Datacenter ↔ Instance',
       type: 'ManyToMany',
       color: '#3fb950',
-      desc: 'Один инстанс может размещаться в нескольких ЦОД. DatacenterDto содержит instanceIds, InstanceDto — datacenterIds.',
+      desc: 'Один инстанс может размещаться в нескольких дата-центрах для обеспечения отказоустойчивости.',
     },
     {
       title: 'Instance ↔ Software',
       type: 'ManyToMany',
       color: '#bc8cff',
-      desc: 'Инстанс может иметь несколько предустановленных ПО. InstanceDto хранит список softwareIds.',
+      desc: 'Инстанс может иметь несколько предустановленных программных пакетов.',
     },
     {
       title: 'User → Order',
       type: 'OneToMany',
       color: '#ff9f43',
-      desc: 'Пользователь может иметь несколько заказов. UserDto содержит список orderIds (READ_ONLY).',
+      desc: 'Пользователь может иметь несколько заказов на аренду серверов.',
     },
   ]
 

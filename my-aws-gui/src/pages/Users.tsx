@@ -88,7 +88,7 @@ export function Users({ toast }: Props) {
       <div className="page-header">
         <div>
           <div className="page-title">Пользователи</div>
-          <div className="page-sub">Учётные записи · OneToMany → Заказы</div>
+          <div className="page-sub">Управление учётными записями</div>
         </div>
         <div className="page-actions">
           <button className="btn btn-primary" onClick={openCreate}>+ Новый пользователь</button>

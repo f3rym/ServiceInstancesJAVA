@@ -19,9 +19,6 @@ export function Layout({ children, toasts, dismissToast }: Props) {
           FeInstances
         </Link>
         <div className="topbar-right">
-          <span style={{ fontSize: 12, color: 'var(--text3)', fontFamily: 'var(--mono)' }}>
-            eu-west-1
-          </span>
           <div className="avatar" title="Admin">AD</div>
         </div>
       </header>

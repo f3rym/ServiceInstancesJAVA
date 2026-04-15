@@ -113,7 +113,7 @@ export function Orders({ toast }: Props) {
         <div>
           <div className="page-title">Заказы</div>
           <div className="page-sub">
-            Аренда серверов · User OneToMany Orders
+            Аренда серверов
             {userIdFilter && (
               <> · <span style={{ color: 'var(--blue)' }}>Фильтр: User #{userIdFilter}</span></>
             )}

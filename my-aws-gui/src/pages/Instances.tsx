@@ -172,7 +172,7 @@ export function Instances({ toast }: Props) {
         <div>
           <div className="page-title">Инстансы</div>
           <div className="page-sub">
-            Облачные серверы · ManyToMany ↔ Datacenter · ManyToMany ↔ Software
+            Управление облачными серверами
           </div>
         </div>
         <div className="page-actions">
@@ -270,24 +270,9 @@ export function Instances({ toast }: Props) {
         {loading ? (
           <div className="loading"><div className="spinner" /> Загрузка…</div>
         ) : allRows.length === 0 ? (
-          <div className="empty-state" style={{ flexDirection: 'column', gap: 12 }}>
+          <div className="empty-state">
             <span className="empty-icon">⚙</span>
             <span className="empty-text">Инстансы не найдены</span>
-            <div style={{ fontSize: 12, color: 'var(--text3)', textAlign: 'center', maxWidth: 400, lineHeight: 1.7 }}>
-              Если данные в БД есть, проверьте:<br />
-              1. Добавлены ли <code style={{ fontFamily: 'var(--mono)', background: 'var(--bg4)', padding: '1px 5px', borderRadius: 3 }}>@JsonIgnoreProperties</code> в модели<br />
-              2. Маппер использует <code style={{ fontFamily: 'var(--mono)', background: 'var(--bg4)', padding: '1px 5px', borderRadius: 3 }}>getInstalledSoftware()</code>, а не <code style={{ fontFamily: 'var(--mono)', background: 'var(--bg4)', padding: '1px 5px', borderRadius: 3 }}>getSoftware()</code><br />
-              3. Сервис помечен <code style={{ fontFamily: 'var(--mono)', background: 'var(--bg4)', padding: '1px 5px', borderRadius: 3 }}>@Transactional</code>
-            </div>
-            <a
-              href="http://localhost:8080/api/v1/instances"
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-sm"
-              style={{ marginTop: 4 }}
-            >
-              Открыть API напрямую ↗
-            </a>
           </div>
         ) : (
           <table>
@@ -404,11 +389,10 @@ export function Instances({ toast }: Props) {
               />
             </div>
 
-            {/* ManyToMany: Datacenters */}
+            {/* Datacenters */}
             <div className="form-group full">
               <label style={{ marginBottom: 8, display: 'block' }}>
                 Дата-центры
-                <span style={{ fontSize: 11, color: 'var(--blue)', marginLeft: 8 }}>ManyToMany</span>
               </label>
               {datacenters.length === 0 ? (
                 <span style={{ fontSize: 12, color: 'var(--text3)' }}>
@@ -444,11 +428,10 @@ export function Instances({ toast }: Props) {
               )}
             </div>
 
-            {/* ManyToMany: Software */}
+            {/* Software */}
             <div className="form-group full">
               <label style={{ marginBottom: 8, display: 'block' }}>
                 Программное обеспечение
-                <span style={{ fontSize: 11, color: 'var(--purple)', marginLeft: 8 }}>ManyToMany</span>
               </label>
               {software.length === 0 ? (
                 <span style={{ fontSize: 12, color: 'var(--text3)' }}>

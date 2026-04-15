@@ -81,7 +81,7 @@ export function Software({ toast }: Props) {
       <div className="page-header">
         <div>
           <div className="page-title">Программное обеспечение</div>
-          <div className="page-sub">Каталог ПО · ManyToMany ↔ Instances</div>
+          <div className="page-sub">Каталог доступного ПО для установки на инстансы</div>
         </div>
         <div className="page-actions">
           <button className="btn btn-primary" onClick={openCreate}>+ Добавить ПО</button>

@@ -85,7 +85,7 @@ export function Datacenters({ toast }: Props) {
       <div className="page-header">
         <div>
           <div className="page-title">Дата-центры</div>
-          <div className="page-sub">Локации и ресурсы ЦОД · ManyToMany ↔ Instances</div>
+          <div className="page-sub">Локации и ресурсы дата-центров</div>
         </div>
         <div className="page-actions">
           <button className="btn btn-primary" onClick={openCreate}>+ Новый дата-центр</button>

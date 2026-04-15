@@ -27,12 +27,6 @@ const NAV: { group: string; items: NavItem[] }[] = [
       { to: '/orders', label: 'Orders', dotColor: '#39d353' },
     ],
   },
-  {
-    group: 'System',
-    items: [
-      { to: '/statistics', label: 'Statistics', dotColor: '#f78166' },
-    ],
-  },
 ]
 
 export function Sidebar() {
